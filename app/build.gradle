@@ -23,7 +23,13 @@ android {
         }
         python{
             buildPython "/Library/Frameworks/Python.framework/Versions/3.7/bin/python3/python3.7.exe"
+//            pip {
+//                install "pandas==0.24.2"
+//                install "numpy==1.16.1"
+//            }
         }
+
+
     }
     buildTypes {
         release {

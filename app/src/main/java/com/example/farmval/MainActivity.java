@@ -2,9 +2,6 @@ package com.example.farmval;
 
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -12,11 +9,18 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
 import com.chaquo.python.Python;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.android.AndroidPlatform;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button mSubmitButton;
+    EditText input1, input2, input3, input4, input5, input6;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,26 +29,50 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        mSubmitButton = (Button) findViewById(R.id.submit_button);
+
+        input1 = (EditText) findViewById(R.id.editText1);
+        input2 = (EditText) findViewById(R.id.editText2);
+        input3 = (EditText) findViewById(R.id.editText3);
+        input4 = (EditText) findViewById(R.id.editText4);
+        input5 = (EditText) findViewById(R.id.editText5);
+        input6 = (EditText) findViewById(R.id.editText6);
+
+
+        mSubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                if (input1.getText().toString().isEmpty()
+                        || input2.getText().toString().isEmpty()
+                        || input3.getText().toString().isEmpty()
+                        || input4.getText().toString().isEmpty()
+                        || input5.getText().toString().isEmpty()
+                        || input6.getText().toString().isEmpty()
+                ) {
+                    Toast.makeText(getApplicationContext(), "Enter the Data",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+
+                    if(!Python.isStarted()){
+                        Python.start(new AndroidPlatform(getApplicationContext()));
+                    }
+
+                    Python py = Python.getInstance();
+
+                    PyObject pyf = py.getModule("soil");
+
+                    PyObject obj = pyf.callAttr(
+                            "test", input1.getText().toString(), input2.getText().toString(),
+                             input3.getText().toString(), input4.getText().toString(),
+                             input5.getText().toString(), input6.getText().toString());
+
+                    Log.i("testing", obj.toString());
+
+                }
             }
+
         });
-
-        if(!Python.isStarted()){
-            Python.start(new AndroidPlatform(this));
-        }
-
-        Python py = Python.getInstance();
-
-        PyObject pyf = py.getModule("soil");
-
-        PyObject obj = pyf.callAttr("test");
-
-        Log.i("testing", obj.toString());
 
 
     }
