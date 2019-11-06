@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     PyObject pyf = py.getModule("soil");
 
                     PyObject obj = pyf.callAttr(
-                            "test", input1.getText().toString(), input2.getText().toString(),
+                            "getSoilYield", input1.getText().toString(), input2.getText().toString(),
                              input3.getText().toString(), input4.getText().toString(),
                              input5.getText().toString(), input6.getText().toString());
 
