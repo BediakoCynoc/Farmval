@@ -1,24 +1,32 @@
+#import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.linear_model import LinearRegression
+from sklearn.svm import SVR
+from sklearn import metrics
+from sklearn import linear_model
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import csv
 
 
 def test(input1, input2, input3, input4, input5, input6):
     return input1 + input2 + input3 + input4 + input5 + input6
 
 def getSoilYield(input1, input2, input3, input4, input5, input6):
+    print("Testing here")
+    dataset = pd.read_csv("india_ds.csv", encoding="utf-8")
+    dataset = []
+    with open('india_ds.csv') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter = ",")
+        dataset = [row for row in csv_reader][1:]
 
-    import pandas as pd
-    import numpy as np
-    from sklearn.ensemble import RandomForestRegressor
-    from sklearn.linear_model import LinearRegression
-    from sklearn.svm import SVR
-    from sklearn import metrics
-    from sklearn import linear_model
-    from sklearn.linear_model import LogisticRegression
-    from sklearn.model_selection import train_test_split
+    print("Testing here after reading data")
 
-    dataset = pd.read_csv('data.csv')
-
-    X = dataset.iloc[:, 0:-1].values
-    y = dataset.iloc[:, -1].values
+    #X = dataset.iloc[:, 0:-1].values
+    #y = dataset.iloc[:, -1].values
+    X = dataset[:,0:-1]
+    y = dataset[:,-1]
 
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
     regressor = RandomForestRegressor(n_estimators=100, random_state=0)
